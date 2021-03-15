@@ -33,7 +33,7 @@ public class Main {
 
     public void launch(String[] args) {
 
-        CmdLineParser parser = new CmdLineParser(this);
+        CmdLineParser parser = new CmdLineParser(this); //вот тут вечно вылазит ошибка (org.kohsuke.args4j.IllegalAnnotationError: Argument with index 0 is used more than once)
 
         try {
             parser.parseArgument(args);

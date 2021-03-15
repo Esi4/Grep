@@ -16,7 +16,7 @@ public class Grep {
             while ((str = read.readLine()) != null) {
                 assert false;
                 if(!rgx) {
-                    if(!register) result.add(wordSearch(str, word, invert));
+                    if(!register) result.add(wordSearch(str, word, invert)); //как-то это неправильно выглядит
                     else result.add(wordSearch(str.toLowerCase(), word.toLowerCase(), invert));
                 } else {
                     if(!register) result.add(regularSearch(str, word, invert));
@@ -28,7 +28,7 @@ public class Grep {
             System.err.println(e.getMessage());
         }
 
-        return result;
+        return result; //исправить почему результат вечно нулл, хоть в него что-то, да записывается
 
     }
 
