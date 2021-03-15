@@ -21,7 +21,7 @@ public class Main {
     @Option(name = "-i", usage = "Ignore register")
     private boolean register;
 
-    @Argument(metaVar = "InputName", usage = "InputName")
+    @Argument(metaVar = "InputName", usage = "InputName", index = 1)
     private String inputName;
 
     @Argument(metaVar = "word", usage = "Word")
@@ -33,7 +33,7 @@ public class Main {
 
     public void launch(String[] args) {
 
-        CmdLineParser parser = new CmdLineParser(this); //вот тут вечно вылезит ошибка (org.kohsuke.args4j.IllegalAnnotationError: Argument with index 0 is used more than once)
+        CmdLineParser parser = new CmdLineParser(this);
 
         try {
             parser.parseArgument(args);
@@ -51,13 +51,9 @@ public class Main {
                for(String line : result) {
                    System.out.println(line);
                }
-
             }
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-
-
     }
-
 }

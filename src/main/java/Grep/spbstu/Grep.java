@@ -2,25 +2,27 @@ package Grep.spbstu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Grep {
-    public List<String> grepFlag(boolean rgx, boolean invert, boolean register, String word, BufferedReader read) {
-        List<String> result = null;
 
+
+public class Grep {
+    public List<String> result = new ArrayList<String>();
+
+    public List<String> grepFlag(boolean rgx, boolean invert, boolean register, String word, BufferedReader read) {
 
         try {
             String str;
             while ((str = read.readLine()) != null) {
-                assert false;
                 if(!rgx) {
-                    if(!register) result.add(wordSearch(str, word, invert)); //как-то это неправильно выглядит
-                    else result.add(wordSearch(str.toLowerCase(), word.toLowerCase(), invert));
+                    if(!register) wordSearch(str, word, invert);
+                    else wordSearch(str.toLowerCase(), word.toLowerCase(), invert);
                 } else {
-                    if(!register) result.add(regularSearch(str, word, invert));
-                    else result.add(regularSearch(str.toLowerCase(), word.toLowerCase(), invert));
+                    if(!register) regularSearch(str, word, invert);
+                    else regularSearch(str.toLowerCase(), word.toLowerCase(), invert);
                 }
             }
 
@@ -28,33 +30,33 @@ public class Grep {
             System.err.println(e.getMessage());
         }
 
-        return result; //исправить почему результат вечно нулл, хоть в него что-то, да записывается
+        return result;
 
     }
 
-    public String wordSearch(String str, String word, boolean invert) {
+    public void wordSearch(String str, String word, boolean invert) {
         String[] split = str.split(" ");
         for (String s : split) {
-            if (s.equals(word)) {
-                return str;
-            } else {
-                if (invert) {
-                    return str;
+            if (invert) {
+                if (!s.equals(word)) {
+                result.add(str);
+                break;
                 }
             }
+            if(s.equals(word)) {
+                result.add(str);
+                break;
+            }
         }
-
-        return "";
     }
 
-    public String regularSearch(String str, String word, boolean invert) {
+    public void regularSearch(String str, String word, boolean invert) {
         Pattern pattern = Pattern.compile(word);
         Matcher matcher = pattern.matcher(str);
         if(matcher.find()) {
-            return str;
+            result.add(str);
         } else if(invert) {
-            return str;
+            result.add(str);
         }
-        return "";
     }
 }

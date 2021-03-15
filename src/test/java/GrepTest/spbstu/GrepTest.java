@@ -13,8 +13,9 @@ import Grep.spbstu.Main;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GrepTest {
-    private final Path inputNamePath = Paths.get("test/GrepTest.spbstu/input");
+    private final Path inputNamePath = Paths.get("src","inputFiles", "input");
     private final String inputName = inputNamePath.toString();
+    private final String ls = System.lineSeparator();
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
@@ -31,7 +32,22 @@ public class GrepTest {
     @Test
     public void word() {
         Main.begin(new String[]{"one", inputName});
-        assertEquals("one, one", outContent);
+        assertEquals("one, one" + ls, outContent.toString());
+    }
+
+    @Test
+    public void regular() {
+        Main.begin(new String[]{"-r", "(^o)", inputName});
+        assertEquals("one, one" + ls +"o ne, two" + ls, outContent.toString());
+    }
+
+    @Test
+    public void invertWord() {
+        Main.begin(new String[]{"-v", "one", inputName});
+        assertEquals("One, Two, Three, Four" + ls
+                + "Five, One, Six," + ls
+                + "Seven, Eight," + ls
+                + "o ne, two", outContent.toString());
     }
 
 }
