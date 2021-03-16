@@ -47,7 +47,39 @@ public class GrepTest {
         assertEquals("One, Two, Three, Four" + ls
                 + "Five, One, Six," + ls
                 + "Seven, Eight," + ls
-                + "o ne, two", outContent.toString());
+                + "o ne, two" + ls, outContent.toString());
     }
+
+    @Test
+    public void invertRegular() {
+        Main.begin(new String[]{"-r", "-v", "(^o)", inputName});
+        assertEquals("One, Two, Three, Four" + ls
+                + "Five, One, Six," + ls
+                + "Seven, Eight," + ls, outContent.toString());
+    }
+
+    @Test
+    public void registerWord() {
+        Main.begin(new String[]{"-i", "one", inputName});
+        assertEquals("One, Two, Three, Four" + ls
+                + "Five, One, Six," + ls
+                + "one, one" + ls, outContent.toString());
+    }
+
+    @Test
+    public void registerRegular() {
+        Main.begin(new String[]{"-i", "-r", "^o", inputName});
+        assertEquals("One, Two, Three, Four" + ls
+                + "one, one" + ls
+                +"o ne, two" + ls, outContent.toString());
+    }
+
+    @Test
+    public void allTest() {
+        Main.begin(new String[]{"-v","-i", "-r", "^o", inputName});
+        assertEquals("Five, One, Six," + ls
+                + "Seven, Eight," + ls, outContent.toString());
+    }
+
 
 }

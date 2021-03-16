@@ -17,12 +17,13 @@ public class Grep {
         try {
             String str;
             while ((str = read.readLine()) != null) {
+                String strCase = str;
                 if(!rgx) {
-                    if(!register) wordSearch(str, word, invert);
-                    else wordSearch(str.toLowerCase(), word.toLowerCase(), invert);
+                    if(!register) wordSearch(str, word, strCase, invert);
+                    else wordSearch(str.toLowerCase(), word.toLowerCase(), strCase, invert);
                 } else {
-                    if(!register) regularSearch(str, word, invert);
-                    else regularSearch(str.toLowerCase(), word.toLowerCase(), invert);
+                    if(!register) regularSearch(str, word, strCase, invert);
+                    else regularSearch(str.toLowerCase(), word, strCase, invert);
                 }
             }
 
@@ -34,29 +35,22 @@ public class Grep {
 
     }
 
-    public void wordSearch(String str, String word, boolean invert) {
-        String[] split = str.split(" ");
-        for (String s : split) {
-            if (invert) {
-                if (!s.equals(word)) {
-                result.add(str);
-                break;
-                }
-            }
-            if(s.equals(word)) {
-                result.add(str);
-                break;
-            }
+    public void wordSearch(String str, String word, String strCase, boolean invert) {
+        if(str.contains(word) && !invert) {
+            result.add(strCase);
+        } else if(invert && !str.contains(word)) {
+            result.add(strCase);
         }
     }
 
-    public void regularSearch(String str, String word, boolean invert) {
+    public void regularSearch(String str, String word, String strCase, boolean invert) {
         Pattern pattern = Pattern.compile(word);
         Matcher matcher = pattern.matcher(str);
-        if(matcher.find()) {
-            result.add(str);
-        } else if(invert) {
-            result.add(str);
+        boolean mFind = matcher.find();
+        if(mFind && !invert) {
+            result.add(strCase);
+        } else if(!mFind && invert) {
+            result.add(strCase);
         }
     }
 }
