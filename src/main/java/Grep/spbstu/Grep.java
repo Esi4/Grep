@@ -12,18 +12,18 @@ import java.util.regex.Pattern;
 public class Grep {
     public List<String> result = new ArrayList<String>();
 
+
     public List<String> grepFlag(boolean rgx, boolean invert, boolean register, String word, BufferedReader read) {
 
         try {
             String str;
             while ((str = read.readLine()) != null) {
-                String strCase = str;
                 if(!rgx) {
-                    if(!register) wordSearch(str, word, strCase, invert);
-                    else wordSearch(str.toLowerCase(), word.toLowerCase(), strCase, invert);
+                    if(!register) wordSearch(str, word, str, invert);
+                    else wordSearch(str.toLowerCase(), word.toLowerCase(), str, invert);
                 } else {
-                    if(!register) regularSearch(str, word, strCase, invert);
-                    else regularSearch(str.toLowerCase(), word, strCase, invert);
+                    if(!register) regularSearch(str, word, str, invert);
+                    else regularSearch(str.toLowerCase(), word, str, invert);
                 }
             }
 
@@ -35,7 +35,7 @@ public class Grep {
 
     }
 
-    public void wordSearch(String str, String word, String strCase, boolean invert) {
+    private void wordSearch(String str, String word, String strCase, boolean invert) {
         if(str.contains(word) && !invert) {
             result.add(strCase);
         } else if(invert && !str.contains(word)) {
@@ -43,7 +43,7 @@ public class Grep {
         }
     }
 
-    public void regularSearch(String str, String word, String strCase, boolean invert) {
+    private void regularSearch(String str, String word, String strCase, boolean invert) {
         Pattern pattern = Pattern.compile(word);
         Matcher matcher = pattern.matcher(str);
         boolean mFind = matcher.find();
